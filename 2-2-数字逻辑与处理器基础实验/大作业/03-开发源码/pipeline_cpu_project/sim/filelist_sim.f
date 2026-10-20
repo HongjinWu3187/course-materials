@@ -1,0 +1,13 @@
+rtl/cpu/ALU.v
+rtl/cpu/RegisterFile.v
+rtl/cpu/ControlUnit.v
+rtl/cpu/ForwardingUnit.v
+rtl/cpu/HazardUnit.v
+rtl/cpu/PipelineCPU.v
+rtl/memory/InstructionROM.v
+rtl/memory/DataRAM.v
+rtl/peripheral/SevenSegPeripheral.v
+rtl/peripheral/UartTx.v
+rtl/peripheral/UartRx.v
+rtl/peripheral/UartPeripheral.v
+rtl/top/AmplifierSoC.v

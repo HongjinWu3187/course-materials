@@ -1,0 +1,25 @@
+# macOS / Windows metadata
+.DS_Store
+._*
+Thumbs.db
+desktop.ini
+
+# Office temporary files
+~$*
+~WRL*.tmp
+
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Newly generated Vivado working files
+.Xil/
+*.jou
+*.log
+*.str
+*.cache/
+*.runs/
+*.sim/
+*.hw/
+
+# Keep submitted archives, bitstreams, memory images and assignment binaries.

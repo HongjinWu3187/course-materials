@@ -1,0 +1,94 @@
+============================================================
+【重要：验证前必须修改文件路径、未加后仿文件】
+============================================================
+
+老师好！
+
+部分 Verilog 文件保留了原计算机上的绝对路径：
+
+D:/Downloads/pipeline_cpu_project_uart_bonus/
+
+在其他计算机或其他目录中重新综合、实现或运行 RTL 仿真之前，必须把下列路径修改为本机实际路径。
+否则 $readmemh 会无法找到初始化文件。（直接烧录比特流无需考虑）
+
+此外，在后仿验证时需要把
+    设计代码_含UART功能/sim/tb_board_post_impl.v
+    设计代码_含UART功能/rtl/top/BoardTop_sim.v
+加入工程，现在的工程文件中没有加入这两个文件。
+
+验证指令数和 CPI 的仿真文件
+    设计代码_含UART功能/sim/tb_amplifier_soc_cpi.v
+也没有加入工程。
+
+---------------------------------------------------------------
+一、需要使用的两个初始化文件
+
+1. 指令 ROM：
+   设计代码_含UART功能/asm/amplifier_program.hex
+
+2. 数据 RAM：
+   设计代码_含UART功能/data/amplifier_data.hex
+
+建议使用绝对路径。
+
+---------------------------------------------------------------
+二、需要修改的文件和位置（共 8 处）
+
+【1】rtl/top/AmplifierSoC.v
+
+第 4 行附近：
+    parameter ROM_INIT_FILE =
+        "D:/Downloads/pipeline_cpu_project_uart_bonus/asm/amplifier_program.hex"
+
+第 5 行附近：
+    parameter RAM_INIT_FILE =
+        "D:/Downloads/pipeline_cpu_project_uart_bonus/data/amplifier_data.hex"
+
+
+【2】rtl/memory/InstructionROM.v
+
+第 3 行附近：
+    parameter INIT_FILE =
+        "D:/Downloads/pipeline_cpu_project_uart_bonus/asm/amplifier_program.hex"
+
+
+【3】rtl/memory/DataRAM.v
+
+第 3 行附近：
+    parameter INIT_FILE =
+        "D:/Downloads/pipeline_cpu_project_uart_bonus/data/amplifier_data.hex"
+
+
+【4】sim/tb_amplifier_soc.v
+
+第 24 行附近：
+    .ROM_INIT_FILE(
+        "D:/Downloads/pipeline_cpu_project_uart_bonus/asm/amplifier_program.hex")
+
+第 25 行附近：
+    .RAM_INIT_FILE(
+        "D:/Downloads/pipeline_cpu_project_uart_bonus/data/amplifier_data.hex")
+
+
+【5】sim/tb_amplifier_soc_cpi.v
+
+第 35 行附近：
+    .ROM_INIT_FILE(
+        "D:/Downloads/pipeline_cpu_project_uart_bonus/asm/amplifier_program.hex")
+
+第 36 行附近：
+    .RAM_INIT_FILE(
+        "D:/Downloads/pipeline_cpu_project_uart_bonus/data/amplifier_data.hex")
+
+---------------------------------------------------------------
+三、Vivado 工程验证注意事项
+
+1. 实际综合、实现和生成 bitstream 时，顶层模块必须设置为 BoardTop。
+
+2. BoardTop_sim 仅用于缩短 Post-Implementation Timing Simulation 中的 UART 收发时间，不能用于生成实际上板使用的 bitstream。
+   tb_board_post_impl.v、BoardTop_sim.v 和 tb_amplifier_soc_cpi.v 均未加入提交的现成工程文件。
+
+3. 如果打开 .xpr 后 Vivado 在 Sources 窗口中报告源文件丢失，说明.xpr 还保存了原计算机上的工程路径。
+   此时应在 Vivado 中删除失效引用，再从本文件夹的 rtl、sim 和 constraints 目录重新添加对应文件。
+
+4. 已提供的 BoardTop.bit 是已经生成的可烧录文件。

@@ -1,0 +1,28 @@
+1. Read Input from test.dat (binary)
+   - Read n
+   - Read adjacency list for each node
+   - Read signal strength h
+
+2. Initialize arrays
+   - f[1..n] = 0 (amplifier count)
+   - g[1..n] = 0 (max signal needed from subtree)
+
+3. Recursive DFS function: dfs(u, parent)
+   - sons = 0
+   - for each neighbor (v, len) of u:
+       if v == parent: continue
+       if len >= h: output 0 and exit (impossible)
+       dfs(v, u)
+       g[u] = max(g[u], g[v] + len)
+       f[u] += f[v]
+       sons++
+   - if sons == 0:  // leaf node
+       f[u] = 0
+       g[u] = 1
+   - else if u != root and g[u] + edge_to_parent > h:
+       f[u]++
+       g[u] = 1
+
+4. Main
+   - Call dfs(1, 0)
+   - Output f[1]
